@@ -21,15 +21,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: $
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
+
+      - name: Build
+        run: npm run build
 
       - name: Run tests
         run: npm run test:ci
 
-      - name: Build
-        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: task-manager-fe
+          path: dist/task-manager-fe
