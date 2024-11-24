@@ -1,41 +1,47 @@
-name: Angular Build
+name: Build and Test Angular App
 
 on:
   push:
-    branches: ["master"]
+    branches:
+      - main  # Trigger on pushes to the 'main' branch
   pull_request:
-    branches: ["master"]
+    branches:
+      - main  # Trigger on pull requests to the 'main' branch
 
 jobs:
-  angular:
-    name: Angular Build
+  build-and-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20]
 
     steps:
-      - name: Checkout the source code
+      # Step 1: Checkout the code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+          node-version: 16  # Use the version matching your project requirements
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: Build
-        run: npm run build
+      # Step 4: Run lint checks
+      - name: Run lint checks
+        run: npm run lint
 
-      - name: Run tests
-        run: npm run test
+      # Step 5: Run unit tests
+      - name: Run unit tests
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
 
-      - name: Upload artifact
+      # Step 6: Build the app
+      - name: Build Angular app
+        run: npm run build -- --prod
+
+      # Optional: Archive the build output as an artifact
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: task-manager-fe
-          path: dist/task-manager-fe
+          name: angular-build
+          path: dist/
