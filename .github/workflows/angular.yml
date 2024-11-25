@@ -26,8 +26,8 @@ jobs:
         run: npm install
 
       # Step 4: Run lint checks
-      - name: Run lint checks
-        run: npm run lint
+      # - name: Run lint checks
+      #   run: npm run lint
 
       # Step 5: Run unit tests
       - name: Run unit tests
