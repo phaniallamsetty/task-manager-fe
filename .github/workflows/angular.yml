@@ -23,7 +23,7 @@ jobs:
 
       # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Step 4: Run lint checks
       # - name: Run lint checks
@@ -31,11 +31,17 @@ jobs:
 
       # Step 5: Run unit tests
       - name: Run unit tests
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
+        run: npm run ci:test
+
+      - name: Clean Distribution Directory
+        run: npm run ci:clean
 
       # Step 6: Build the app
       - name: Build Angular app
-        run: npm run build --configuration production --aot
+        run: npm run ci:build
+
+      - name: List files in Distribution Directory
+        run: ls -R ./dist
 
       # Optional: Archive the build output as an artifact
       - name: Upload build artifacts
